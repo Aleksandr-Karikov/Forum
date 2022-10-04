@@ -1,8 +1,8 @@
 import {Body, Controller, Get, Post} from '@nestjs/common';
-import { UserService } from '../services/user.service';
+import { UserService } from './user.service';
 import {CreateUserDto} from "../dto/users/create-user.dto";
 import {ApiOperation, ApiResponse} from "@nestjs/swagger";
-import {User} from "../models/user.model";
+import {User} from "./user.model";
 
 @Controller('/api')
 export class UserController {

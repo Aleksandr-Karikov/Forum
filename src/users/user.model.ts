@@ -17,14 +17,6 @@ export class User extends Model<User, UserCreationAttributes> {
     @Column({type: DataType.STRING, unique: true, allowNull:false})
     userName: string;
 
-    @ApiProperty({example:'qwerty@mail.ru', description:'Электронная почта'})
-    @Column({type: DataType.STRING, unique: true, allowNull:true})
-    email: string;
-
-    @ApiProperty({example:true, description:'Подтвержден ли адрес электронной почты'})
-    @Column({type: DataType.BOOLEAN, allowNull:true})
-    isEmailConfirmed: boolean;
-
     @ApiProperty({example:'password', description:'Пароль пользователя'})
     @Column({type: DataType.STRING, allowNull:false})
     password:string;
