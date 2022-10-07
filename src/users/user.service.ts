@@ -5,6 +5,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { RolesService } from '../roles/roles.service';
 import { AddRoleDto } from './dto/add-role.dto';
 import { BanUserDto } from './dto/ban-user.dto';
+import { Roles } from '../auth/types/types';
 
 @Injectable()
 export class UserService {
@@ -15,7 +16,7 @@ export class UserService {
 
     async createUser(dto: CreateUserDto): Promise<User> {
         const user = await this.userRepository.create(dto);
-        const role = await this.roleService.getRoleByValue('ADMIN');
+        const role = await this.roleService.getRoleByValue(Roles.USER);
         await user.$set('roles', [role.id]);
         user.roles = [role];
         return user;

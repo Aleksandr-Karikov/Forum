@@ -18,5 +18,6 @@ export class ValidationPipe implements PipeTransform {
             );
             throw new ValidationException(messages);
         }
+        return value;
     }
 }

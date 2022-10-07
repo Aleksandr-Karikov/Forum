@@ -2,12 +2,15 @@ import {
     BelongsToMany,
     Column,
     DataType,
+    HasMany,
     Model,
     Table,
 } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 import { Role } from '../roles/role.model';
 import { UserRoles } from '../roles/user-roles.model';
+import { Theme } from '../themes/theme.model';
+import { Message } from '../messages/message.model';
 
 interface UserCreationAttributes {
     password: string;
@@ -46,4 +49,10 @@ export class User extends Model<User, UserCreationAttributes> {
 
     @BelongsToMany(() => Role, () => UserRoles)
     roles: Role[];
+
+    @HasMany(() => Theme)
+    themes: Theme[];
+
+    @HasMany(() => Message)
+    messages: Message[];
 }
