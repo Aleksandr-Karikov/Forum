@@ -6,6 +6,7 @@ import { RolesService } from '../roles/roles.service';
 import { AddRoleDto } from './dto/add-role.dto';
 import { BanUserDto } from './dto/ban-user.dto';
 import { Roles } from '../auth/types/types';
+import { exclude } from './additional/blocked';
 
 @Injectable()
 export class UserService {
@@ -25,6 +26,7 @@ export class UserService {
     async getAllUser(): Promise<User[]> {
         const users = await this.userRepository.findAll({
             include: { all: true },
+            attributes: { exclude },
         });
         return users;
     }

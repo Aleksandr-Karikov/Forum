@@ -65,7 +65,6 @@ export class AuthService {
             userDto.password,
             user.password,
         );
-        console.log(passwordAreEquals);
 
         if (user && passwordAreEquals) return user;
         throw new UnauthorizedException({

@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import {
     ApiBearerAuth,
     ApiOperation,
@@ -33,5 +33,25 @@ export class ThemesController {
             ...dto,
             authorId: currentUser.id,
         });
+    }
+
+    @ApiOperation({ summary: 'Получить все темы с последним сообщением в них' })
+    @ApiResponse({ type: Theme, status: 200 })
+    @Get('/theme')
+    @ROLES(Roles.USER)
+    @UseGuards(AuthGuard)
+    getAllThemes(): Promise<Theme[]> {
+        return this.themeService.getAllThemes();
+    }
+
+    @ApiOperation({
+        summary: 'Получить тему по id',
+    })
+    @ApiResponse({ type: Theme, status: 200 })
+    @Get('/theme/:id')
+    @ROLES(Roles.USER)
+    @UseGuards(AuthGuard)
+    getTheme(@Param('id') id: number): Promise<Theme> {
+        return this.themeService.getThemeById(id);
     }
 }

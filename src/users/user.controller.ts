@@ -23,7 +23,7 @@ export class UserController {
     @ApiOperation({ summary: 'Полный список пользователей' })
     @ApiResponse({ type: User, status: 200 })
     @Get('/user')
-    @ROLES(Roles.ADMIN)
+    @ROLES(Roles.USER)
     @UseGuards(AuthGuard)
     getUsers(): Promise<User[]> {
         return this.userService.getAllUser();
