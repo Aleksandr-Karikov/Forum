@@ -14,7 +14,7 @@ import { Message } from '../messages/message.model';
 
 interface UserCreationAttributes {
     password: string;
-    userName: string;
+    username: string;
 }
 
 @Table({ tableName: 'users' })
@@ -29,8 +29,13 @@ export class User extends Model<User, UserCreationAttributes> {
     id: number;
 
     @ApiProperty({ example: 'qwerty12', description: 'Имя пользователя' })
-    @Column({ type: DataType.STRING, unique: true, allowNull: false })
-    userName: string;
+    @Column({
+        type: DataType.STRING,
+        unique: true,
+        allowNull: false,
+        field: 'username',
+    })
+    username: string;
 
     @ApiProperty({ example: 'password', description: 'Пароль пользователя' })
     @Column({ type: DataType.STRING, allowNull: false })

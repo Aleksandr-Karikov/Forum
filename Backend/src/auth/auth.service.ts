@@ -29,7 +29,7 @@ export class AuthService {
         userDto: CreateUserDto,
     ): ReturnType<typeof this.generateToken> {
         const candidate = await this.userService.getByUserName(
-            userDto.userName,
+            userDto.username,
         );
         if (candidate) {
             throw new HttpException(
@@ -50,7 +50,7 @@ export class AuthService {
 
     private async generateToken(user: User): Promise<AuthResult> {
         const payload = {
-            userName: user.userName,
+            username: user.username,
             id: user.id,
             roles: user.roles,
         };
@@ -60,7 +60,7 @@ export class AuthService {
     }
 
     private async validateUser(userDto: CreateUserDto): Promise<User> {
-        const user = await this.userService.getByUserName(userDto.userName);
+        const user = await this.userService.getByUserName(userDto.username);
         const passwordAreEquals = await bcrypt.compare(
             userDto.password,
             user.password,

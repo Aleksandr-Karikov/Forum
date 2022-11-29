@@ -34,7 +34,7 @@ describe('CatsController', () => {
 
             expect(
                 await authController.registration({
-                    userName: 'username',
+                    username: 'username',
                     password: 'password',
                 }),
             ).toBe(result);
