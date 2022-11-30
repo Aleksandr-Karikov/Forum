@@ -8,6 +8,7 @@ import { getRegisterState } from 'features/Register/model/selectors/getLoginStat
 import { registerActions } from 'features/Register/model/slice/registerSlice';
 import { register } from 'features/Register/model/services/register/register';
 import cls from './RegisterForm.module.scss';
+import InputField from "shared/ui/FormField/InputField/InputField";
 
 interface LoginFormProps {
     className?: string;
@@ -45,21 +46,25 @@ export const RegisterForm = memo(({ className }: LoginFormProps) => {
                     // <Text text={t('вы ввели неверный логин или пароль')} theme={TextTheme.ERROR} />
                 )
             }
-            <TextField
+            <InputField
+                errors={error}
+                name={'username'}
                 type="text"
                 placeholder={t('Введите логин')}
                 onChange={onChangeUsername}
                 value={username}
                 margin="normal"
             />
-            <TextField
+            <InputField
+                errors={error}
+                name={'password'}
                 margin="normal"
                 type="password"
                 onChange={onChangePassword}
                 value={password}
                 placeholder={t('Введите пароль')}
             />
-            <TextField
+            <InputField
                 margin="normal"
                 type="password"
                 onChange={onChangeConfirmPassword}

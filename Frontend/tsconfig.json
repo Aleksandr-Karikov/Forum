@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "skipLibCheck": true,
     "outDir": "./dist/",
     "noImplicitAny": true,
     "module": "ESNext",
@@ -10,7 +11,8 @@
     //absolute import
     "baseUrl": ".",
     "paths": {
-      "*": ["./src/*"]
+      "*": ["./src/*"],
+      "@common": ["../Common/dist"],
     },
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
@@ -24,5 +26,11 @@
     "./config/jest/setupTests.ts",
     "./src/**/*.tsx",
     "./src/**/*.ts",
+  ],
+  "exclude": ["node_modules"],
+  "references": [
+    {
+      "path": "../Common",
+    }
   ]
 }

@@ -1,0 +1,56 @@
+version: '3.0'
+
+services:
+  common:
+    container_name: common
+    build:
+      dockerfile: Dockerfile
+      context: "./Common"
+    volumes:
+      - /app/node_modules
+      - ./Common:/app
+    restart: always
+  backend:
+    build:
+      dockerfile: Dockerfile
+      context: "./Backend"
+    depends_on:
+      - postgres
+      - common
+    volumes:
+      - /app/node_modules
+      - ./Backend:/app
+    container_name: backend
+    env_file:
+      - Backend/.development.env
+    ports:
+      - 5000:5000
+      - 9229:9229
+    restart: always
+  postgres:
+    container_name: postgres
+    image: postgres:12
+    env_file:
+      - Backend/.development.env
+    environment:
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - "5433:5433"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+  frontend:
+    container_name: frontend
+    ports:
+      - 3000:3000
+    build:
+      dockerfile: Dockerfile
+      context: "./Frontend"
+    depends_on:
+      - common
+    volumes:
+      - /app/node_modules
+      - ./Frontend:/app
+    restart: always
+volumes:
+  pgdata:

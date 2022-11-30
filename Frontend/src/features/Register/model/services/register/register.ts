@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { User, userActions } from 'entities/User';
 import { USER_LOCALSTORAGE_KEY } from 'shared/const/localstorage';
 import axios from 'axios';
+import {Error} from '@common'
 
 interface RegisterProps {
     username:string,
@@ -13,11 +14,12 @@ enum LoginErrors {
     SERVER_ERROR = '',
 }
 
-export const register = createAsyncThunk<User, RegisterProps, {rejectValue: string}>(
+export const register = createAsyncThunk<User, RegisterProps, {rejectValue: Error}>(
     '/register',
     async (authData, thunkApi) => {
         try {
-            const response = await axios.post<User>('http://localhost:5000/api/registration', authData);
+            const response = await axios.post<User>('http://localhost:7000/api/registration', authData);
+
             if (!response.data) {
                 throw new Error();
             }
@@ -27,7 +29,8 @@ export const register = createAsyncThunk<User, RegisterProps, {rejectValue: stri
 
             return response.data;
         } catch (e) {
-            return thunkApi.rejectWithValue('error');
+            console.log(e.response.data.errors)
+            return thunkApi.rejectWithValue(e.response.data.errors);
         }
     },
 );

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@mui/material';
 import { getUserAuthData, userActions } from 'entities/User';
 import { RegisterModal } from 'features/Register/ui/RegisterModal/RegisterModal';
-import cls from './Navbar.module.scss';
+import cls from './NavBar.module.scss';
 
 interface NavbarProps {
     className?: string;

@@ -33,7 +33,6 @@ export class User extends Model<User, UserCreationAttributes> {
         type: DataType.STRING,
         unique: true,
         allowNull: false,
-        field: 'username',
     })
     username: string;
 
