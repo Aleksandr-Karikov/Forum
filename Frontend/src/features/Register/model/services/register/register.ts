@@ -18,8 +18,9 @@ export const register = createAsyncThunk<User, RegisterProps, {rejectValue: Erro
     '/register',
     async (authData, thunkApi) => {
         try {
-            const response = await axios.post<User>('http://localhost:7000/api/registration', authData);
+            const response = await axios.post<User>('http://localhost:5000/api/registration', authData);
 
+            console.log('test')
             if (!response.data) {
                 throw new Error();
             }

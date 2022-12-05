@@ -1,11 +1,7 @@
 FROM node:12.13-alpine
-
 WORKDIR /app
-
 COPY package*.json ./
-
+COPY tsconfig*.json ./
 RUN npm install
-
-COPY . .
-
-COPY ./dist ./dist
+COPY . ./
+RUN npm run build

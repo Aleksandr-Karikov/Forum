@@ -22,5 +22,9 @@ export function buildWebpackConfig(options: BuildOptions): webpack.Configuration
         plugins: buildPlugins(options),
         devtool: isDev ? 'inline-source-map' : undefined,
         devServer: isDev ? buildDevServer(options) : undefined,
+        watchOptions: isDev ? {
+            aggregateTimeout: 300,
+            poll: 1000
+        } : undefined
     };
 }

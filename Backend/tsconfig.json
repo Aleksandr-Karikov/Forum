@@ -25,7 +25,8 @@
   "references": [
     {
       "path": "../Common",
+      "prepend": true
     }
-  ],
+  ]
 
 }
