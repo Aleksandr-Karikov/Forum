@@ -37,7 +37,7 @@ export class AuthGuard implements CanActivate {
                 requiredRoles.includes(role.value),
             );
         } catch (e) {
-            throw new HttpException('Нет доступа', HttpStatus.FORBIDDEN);
+            throw new HttpException(e.message, HttpStatus.UNAUTHORIZED);
         }
     }
 }

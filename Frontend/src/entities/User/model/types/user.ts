@@ -4,5 +4,7 @@ export interface User {
 }
 
 export interface UserSchema {
-    authData?:User;
+    user?:User;
+    error?:string;
+    isLoading?: boolean;
 }

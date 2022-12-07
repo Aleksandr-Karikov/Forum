@@ -2,33 +2,30 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { User, userActions } from 'entities/User';
 import { USER_LOCALSTORAGE_KEY } from 'shared/const/localstorage';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import { TOKEN_KEY } from 'shared/const/auth';
+import { getCurrentUser } from 'entities/User/model/services/getCurrentUser';
+import { AuthToken } from 'features/Register/model/services/register/register';
+import { Error } from '@common';
+import { api } from 'shared/api/axios';
 
 interface LoginByUsernameProps {
     username:string,
     password:string
 }
 
-enum LoginErrors {
-    INCORRECT_DATA = '',
-    SERVER_ERROR = '',
-}
-
-export const loginByUsername = createAsyncThunk<User, LoginByUsernameProps, {rejectValue: string}>(
-    'login/register',
+export const loginByUsername = createAsyncThunk<AuthToken, LoginByUsernameProps, {rejectValue: string | Error}>(
+    '/login',
     async (authData, thunkApi) => {
         try {
-            const response = await axios.post<User>('http://localhost:5000/api/login', authData);
-            if (!response.data) {
-                throw new Error();
-            }
+            const response = await api.post<AuthToken>({ url: '/login', data: authData });
 
-            localStorage.setItem(USER_LOCALSTORAGE_KEY, JSON.stringify(response.data));
-            thunkApi.dispatch(userActions.setAuthData(response.data));
+            Cookies.set(TOKEN_KEY, response.token);
+            thunkApi.dispatch(getCurrentUser());
 
-            return response.data;
+            return response;
         } catch (e) {
-            console.log(e);
-            return thunkApi.rejectWithValue('error');
+            return thunkApi.rejectWithValue(e);
         }
     },
 );

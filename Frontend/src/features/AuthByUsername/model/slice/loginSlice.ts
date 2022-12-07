@@ -1,9 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Error } from '@common';
 import { LoginSchema } from '../types/loginSchema';
 import { loginByUsername } from '../services/loginByUsername/loginByUsername';
 
 const initialState: LoginSchema = {
     isLoading: false,
+    error: null,
+    validationError: null,
     password: '',
     username: '',
 };
@@ -29,7 +32,13 @@ export const loginSlice = createSlice({
         });
         builder.addCase(loginByUsername.rejected, (state, action) => {
             state.isLoading = false;
-            state.error = action.payload;
+            if (typeof action.payload === 'string') {
+                state.error = action.payload as string;
+                state.validationError = null;
+            } else {
+                state.error = null;
+                state.validationError = action.payload as Error;
+            }
         });
     },
 });

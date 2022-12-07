@@ -4,8 +4,10 @@ import { useTranslation } from 'react-i18next';
 import { LoginModal } from 'features/AuthByUsername';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@mui/material';
-import { getUserAuthData, userActions } from 'entities/User';
+import { getUser, userActions } from 'entities/User';
 import { RegisterModal } from 'features/Register/ui/RegisterModal/RegisterModal';
+import { CreateThemeModal } from 'features/CreateTheme';
+import { Link } from 'react-router-dom';
 import cls from './NavBar.module.scss';
 
 interface NavbarProps {
@@ -15,7 +17,9 @@ interface NavbarProps {
 export const Navbar = ({ className }: NavbarProps) => {
     const [isAuthModal, setIsAuthModal] = useState(false);
     const [isRegisterModal, setIsRegisterModal] = useState(false);
-    const authData = useSelector(getUserAuthData);
+    const [isCreateThemeModal, setIsCreateThemeModal] = useState(false);
+    const user = useSelector(getUser);
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const onCloseLoginModal = useCallback(() => {
         setIsAuthModal(false);
@@ -29,37 +33,60 @@ export const Navbar = ({ className }: NavbarProps) => {
         setIsRegisterModal(false);
     }, []);
 
+    const onOpenCreateThemeModal = useCallback(() => {
+        setIsCreateThemeModal(true);
+    }, []);
+    const onCloseCreateThemeModal = useCallback(() => {
+        setIsCreateThemeModal(false);
+    }, []);
+
     const onOpenRegisterModal = useCallback(() => {
         setIsRegisterModal(true);
     }, []);
-
     const onLogout = useCallback(() => {
         dispatch(userActions.logout());
     }, [dispatch]);
 
-    if (authData) {
+    if (user) {
         return (
             <div className={classNames(cls.Navbar, {}, [className])}>
+                <Button>
+                    <Link to="/">
+                        {t('Главная')}
+                    </Link>
+                </Button>
                 <Button
                     onClick={onLogout}
                 >
-                    Выйти
+                    {t('Выйти')}
                 </Button>
+                <Button
+                    onClick={onOpenCreateThemeModal}
+                >
+                    {t('Создать тему')}
+                </Button>
+                <CreateThemeModal onClose={onCloseCreateThemeModal} isOpen={isCreateThemeModal} />
             </div>
         );
     }
 
     return (
         <div className={classNames(cls.Navbar, {}, [className])}>
+            <Button>
+                <Link to="/">
+                    {t('Главная')}
+                </Link>
+            </Button>
+
             <Button
                 onClick={onOpenLoginModal}
             >
-                Войти
+                {t('Войти')}
             </Button>
             <Button
                 onClick={onOpenRegisterModal}
             >
-                Зарегистрироваться
+                {t('Зарегистрироваться')}
             </Button>
             <LoginModal onClose={onCloseLoginModal} isOpen={isAuthModal} />
             <RegisterModal onClose={onCloseRegisterModal} isOpen={isRegisterModal} />

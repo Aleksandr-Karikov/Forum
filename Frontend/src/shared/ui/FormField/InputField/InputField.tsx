@@ -1,23 +1,26 @@
 import React from 'react';
-import {TextField} from "@mui/material";
-import {TextFieldProps} from "@mui/material/TextField/TextField";
-import {Error} from '@common'
-import cls from './InputField.module.scss'
+import { TextField } from '@mui/material';
+import { TextFieldProps } from '@mui/material/TextField/TextField';
+import { Error } from '@common';
+import { Text, TextTheme } from 'shared/ui/Text/Text';
+import cls from './InputField.module.scss';
 
-type InputField = TextFieldProps & {
-    errors?: Error
+type InputFieldProps = TextFieldProps & {
+    errors?: Error,
+    label?: string
 }
-const InputField = ({...props}: InputField) => {
+const InputField = ({ ...props }: InputFieldProps) => {
     const {
         errors,
-        name
+        label,
+        name,
     } = props;
     return (
         <div>
-            <TextField {...props} className={cls.input}/>
+            <TextField {...props} className={cls.input} />
             {
                 errors && errors[name] && errors[name].map((err) => (
-                    <p>{err}</p>
+                    <Text text={err} theme={TextTheme.ERROR} />
                 ))
             }
         </div>

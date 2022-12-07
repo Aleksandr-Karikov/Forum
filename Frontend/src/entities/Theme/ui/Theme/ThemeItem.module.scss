@@ -1,0 +1,16 @@
+.Theme {
+  width: 100%;
+  border: 1px solid var(--primary-color);
+  border-radius: 2px;
+  padding: 5px 10px;
+  .name {
+    font-size: 16px;
+  }
+  .message {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 10px;
+    line-height: 1.5em;
+  }
+}

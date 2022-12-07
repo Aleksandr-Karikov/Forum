@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Error } from '@common';
 import { RegisterSchema } from '../types/registerSchema';
 import { register } from '../services/register/register';
 
@@ -7,6 +8,8 @@ const initialState: RegisterSchema = {
     password: '',
     username: '',
     confirmPassword: '',
+    error: null,
+    validationError: null,
 };
 
 export const registerSlice = createSlice({
@@ -25,7 +28,7 @@ export const registerSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(register.pending, (state, action) => {
-            state.error = undefined;
+            state.error = null;
             state.isLoading = true;
         });
         builder.addCase(register.fulfilled, (state, action) => {
@@ -33,7 +36,13 @@ export const registerSlice = createSlice({
         });
         builder.addCase(register.rejected, (state, action) => {
             state.isLoading = false;
-            state.error = action.payload;
+            if (typeof action.payload === 'string') {
+                state.error = action.payload as string;
+                state.validationError = null;
+            } else {
+                state.error = null;
+                state.validationError = action.payload as Error;
+            }
         });
     },
 });

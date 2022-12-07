@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { memo, useCallback } from 'react';
 import { Text, TextTheme } from 'shared/ui/Text/Text';
 import { Button, TextField } from '@mui/material';
+import InputField from 'shared/ui/FormField/InputField/InputField';
 import { getLoginState } from '../../model/selectors/getLoginState/getLoginState';
 import { loginByUsername } from '../../model/services/loginByUsername/loginByUsername';
 import { loginActions } from '../../model/slice/loginSlice';
@@ -17,7 +18,7 @@ export const LoginForm = memo(({ className }: LoginFormProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const {
-        username, password, error, isLoading,
+        username, password, error, isLoading, validationError,
     } = useSelector(getLoginState);
 
     const onChangeUsername = useCallback((event) => {
@@ -37,17 +38,23 @@ export const LoginForm = memo(({ className }: LoginFormProps) => {
             <Text title={t('Вход в аккаунт')} />
             {
                 error && (
-                    <Text text={t('вы ввели неверный логин или пароль')} theme={TextTheme.ERROR} />
+                    <Text text={error} theme={TextTheme.ERROR} />
                 )
             }
-            <TextField
+            <InputField
+                errors={validationError}
+                name="username"
+                label="Имя пользователя"
                 type="text"
                 placeholder={t('Введите логин')}
                 onChange={onChangeUsername}
                 value={username}
                 margin="normal"
             />
-            <TextField
+            <InputField
+                errors={validationError}
+                name="password"
+                label="Пароль"
                 margin="normal"
                 type="password"
                 onChange={onChangePassword}

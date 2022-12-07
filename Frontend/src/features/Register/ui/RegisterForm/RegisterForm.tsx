@@ -7,8 +7,8 @@ import { Button, TextField } from '@mui/material';
 import { getRegisterState } from 'features/Register/model/selectors/getLoginState/getRegisterState';
 import { registerActions } from 'features/Register/model/slice/registerSlice';
 import { register } from 'features/Register/model/services/register/register';
+import InputField from 'shared/ui/FormField/InputField/InputField';
 import cls from './RegisterForm.module.scss';
-import InputField from "shared/ui/FormField/InputField/InputField";
 
 interface LoginFormProps {
     className?: string;
@@ -18,7 +18,7 @@ export const RegisterForm = memo(({ className }: LoginFormProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const {
-        username, password, error, isLoading, confirmPassword,
+        username, password, error, isLoading, confirmPassword, validationError,
     } = useSelector(getRegisterState);
 
     const onChangeUsername = useCallback((event) => {
@@ -42,13 +42,13 @@ export const RegisterForm = memo(({ className }: LoginFormProps) => {
             <Text title={t('Регистрация')} />
             {
                 error && (
-                    <></>
-                    // <Text text={t('вы ввели неверный логин или пароль')} theme={TextTheme.ERROR} />
+                    <Text text={error} theme={TextTheme.ERROR} />
                 )
             }
             <InputField
-                errors={error}
-                name={'username'}
+                label="Имя пользователя"
+                errors={validationError}
+                name="username"
                 type="text"
                 placeholder={t('Введите логин')}
                 onChange={onChangeUsername}
@@ -56,8 +56,9 @@ export const RegisterForm = memo(({ className }: LoginFormProps) => {
                 margin="normal"
             />
             <InputField
-                errors={error}
-                name={'password'}
+                label="Пароль"
+                errors={validationError}
+                name="password"
                 margin="normal"
                 type="password"
                 onChange={onChangePassword}
@@ -65,6 +66,7 @@ export const RegisterForm = memo(({ className }: LoginFormProps) => {
                 placeholder={t('Введите пароль')}
             />
             <InputField
+                label="Подтверждение пароля"
                 margin="normal"
                 type="password"
                 onChange={onChangeConfirmPassword}

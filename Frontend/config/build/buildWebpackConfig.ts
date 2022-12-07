@@ -24,7 +24,7 @@ export function buildWebpackConfig(options: BuildOptions): webpack.Configuration
         devServer: isDev ? buildDevServer(options) : undefined,
         watchOptions: isDev ? {
             aggregateTimeout: 300,
-            poll: 1000
-        } : undefined
+            poll: 1000,
+        } : undefined,
     };
 }

@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Param,
+    Post,
+    Query,
+    UseGuards,
+} from '@nestjs/common';
 import {
     ApiBearerAuth,
     ApiOperation,
@@ -13,6 +21,7 @@ import { AuthGuard } from '../auth/roles.guard';
 import { ROLES } from '../auth/roles-auth.decorator';
 import { Roles } from '../auth/types/types';
 import { CreateThemeDto } from './dto/create-theme.dto';
+import { FilterTypes } from '@common';
 
 @ApiTags('Темы')
 @ApiBearerAuth()
@@ -38,10 +47,13 @@ export class ThemesController {
     @ApiOperation({ summary: 'Получить все темы с последним сообщением в них' })
     @ApiResponse({ type: Theme, status: 200 })
     @Get('/theme')
-    @ROLES(Roles.USER)
-    @UseGuards(AuthGuard)
-    getAllThemes(): Promise<Theme[]> {
-        return this.themeService.getAllThemes();
+    async getAllThemes(@Query('filter') filter: FilterTypes): Promise<{
+        themes: Theme[];
+        pages: number;
+    }> {
+        const themes = await this.themeService.getAllThemes(filter);
+        const pages = await this.themeService.getPageCount(filter);
+        return { themes, pages };
     }
 
     @ApiOperation({

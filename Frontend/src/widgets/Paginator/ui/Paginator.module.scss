@@ -1,0 +1,13 @@
+.Paginator {
+  display: flex;
+  align-items: center;
+}
+.previous, .next, .page {
+  cursor: pointer;
+  border: 1px solid var(--primary-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+}

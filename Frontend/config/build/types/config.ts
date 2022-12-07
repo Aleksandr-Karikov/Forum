@@ -6,6 +6,7 @@ export interface BuildPaths {
     html: string;
     src: string;
     modules: string;
+    env: string;
 }
 
 export interface BuildOptions {

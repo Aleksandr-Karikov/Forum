@@ -13,6 +13,7 @@ import { AuthGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/types/types';
 import { AddRoleDto } from './dto/add-role.dto';
 import { BanUserDto } from './dto/ban-user.dto';
+import { CurrentUserDecorator } from 'auth/current-user.decorator';
 
 @ApiTags('Позьзователи')
 @ApiBearerAuth()
@@ -20,9 +21,18 @@ import { BanUserDto } from './dto/ban-user.dto';
 export class UserController {
     constructor(private userService: UserService) {}
 
-    @ApiOperation({ summary: 'Полный список пользователей' })
+    @ApiOperation({ summary: 'Текущий авторизованный пользователь' })
     @ApiResponse({ type: User, status: 200 })
     @Get('/user')
+    @ROLES(Roles.USER, Roles.ADMIN)
+    @UseGuards(AuthGuard)
+    getCurrentUser(@CurrentUserDecorator() currentUser: User | null): User {
+        return currentUser;
+    }
+
+    @ApiOperation({ summary: 'Полный список пользователей' })
+    @ApiResponse({ type: User, status: 200 })
+    @Get('/users')
     @ROLES(Roles.USER)
     @UseGuards(AuthGuard)
     getUsers(): Promise<User[]> {

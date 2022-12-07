@@ -6,6 +6,8 @@ import { CreateThemeDto } from './dto/create-theme.dto';
 import { Message } from '../messages/message.model';
 import { User } from '../users/user.model';
 import { exclude } from '../users/additional/blocked';
+import { Op } from 'sequelize';
+import { FilterTypes } from '@common';
 
 @Injectable()
 export class ThemesService {
@@ -28,8 +30,17 @@ export class ThemesService {
         return theme;
     }
 
-    async getAllThemes(): Promise<Theme[]> {
+    async getAllThemes({
+        search = '',
+        limit,
+        page,
+    }: FilterTypes): Promise<Theme[]> {
         return await this.themeRepository.findAll({
+            where: {
+                name: { [Op.iLike]: `%${search}%` },
+            },
+            limit,
+            offset: page * limit,
             include: {
                 model: Message,
                 limit: 1,
@@ -42,6 +53,19 @@ export class ThemesService {
                 ],
             },
         });
+    }
+
+    async getPageCount({
+        search = '',
+        limit,
+        page,
+    }: FilterTypes): Promise<number> {
+        const count = await this.themeRepository.count({
+            where: {
+                name: { [Op.iLike]: `%${search}%` },
+            },
+        });
+        return Math.ceil(count / limit);
     }
 
     async getThemeById(id: number): Promise<Theme> {

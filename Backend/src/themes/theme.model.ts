@@ -37,7 +37,7 @@ export class Theme extends Model<Theme, ThemeCreationAttributes> {
         description: 'Дата создания темы',
     })
     @Column({ type: DataType.DATE, allowNull: false })
-    createdAt: number;
+    createdAt: Date;
 
     @ApiProperty({
         example: 1,
